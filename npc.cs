@@ -1,4 +1,3 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -59,19 +58,44 @@ public class BeetleNPC : MonoBehavior {
     }
     void OnTriggerEnter(Collider, theObject)    
     {
-        // adding more later
+        if (theObject.gameObject.CompareTag("Cucumber")) 
+        {
+            cucumberToDestroy = theObject.GameObject;
+            BeetlePatrol.isEating = true;
+            animator.Play("Eating on Ground");
+            audioSource.PlayOneShot(eating);
+            StartCoroutine("DestroyCucumber");
+        }
+        else if(theObject.gameObject.CompareTag("Cherry"))
+        {
+            _ptsManager = gameObject.Find("Score_Value").GetComponent<PointsManager>();
+            PointsManager.currentScore = PointsManager.currentScore + 10;
+            BeetlePatrol.isAttacking = true;
+            cherryHit = true;
+            animator.Play("Stand");
+            audioSource.PlayOneShot(attack);
+        }
     }
     IEnumerator DestroyCucumber() 
     {
-        // adding more later
+        yield return new WaitForSecondsRealTime (4);
+        Destroy(cucumberToDestroy.gameObject);
+        BeetlePatrol.isEating = false;
     }
     IEnumerator DestroySelfOnGround() 
     {
-        // adding more later  
+        yield return new WaitForSecondsRealTime (4);
+        animator.Play("Die on Ground");
+        audioSource.PlayOneShot(die);
+        Destroy(cucumberToDestroy.gameObject);
     }
     IEnumerator DestroySelfStanding() 
     {
-        // adding more later
+        yield return new WaitForSecondsRealTime (4);
+        animator.Play("Die Standing");
+        audioSource.PlayOneShot(die);
+        Destroy(cucumberToDestroy.gameObject);
+        cherryHit =  false;
     }
 }
 
