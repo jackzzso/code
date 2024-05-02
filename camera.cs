@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// camera system
 public class CameraFollower : MonoBehavior {
     public static CameraFollower instance;
 
