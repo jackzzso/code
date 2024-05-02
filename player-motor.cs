@@ -16,7 +16,7 @@ public class PlayerMotor : MonoBehavior {
     void Start() {
         m_Rigidbody = GetComponent<Rigidbody>();
         currentMoveSpeed = MoveSpeed;
-        m_Cam = Camera.main.transform
+        m_Cam = Camera.main.transform;
         m_Animator = GetComponent<Animator>();
     }
     void Update() 
