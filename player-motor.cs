@@ -27,15 +27,15 @@ public class PlayerMotor : MonoBehavior {
         
         if(Input.GetKeyDown(KeyCode.Space) && m_IsGrounded)
         {
-            m_Rigidbody.AddForce(0,JumpPower,0)
+            m_Rigidbody.AddForce(0,JumpPower,0);
         }
         if(Input.GetKeyDown(KeyCode.LeftShift) && m_IsGrounded)
         {
-            currentMoveSpeed = RunSpeed
+            currentMoveSpeed = RunSpeed;
         }
         if(Input.GetKeyUp(KeyCode.LeftShift))
         {
-            currentMoveSpeed = MoveSpeed 
+            currentMoveSpeed = MoveSpeed;
         }
     }
     float m_TurnAmount;
@@ -43,7 +43,7 @@ public class PlayerMotor : MonoBehavior {
     [SerializeField] float m_StationaryTurnSpeed = 180;
     [SerializeField] float m_MovingTurnSpeed = 360;
 
-    public Transform m_Cam
+    public Transform m_Cam;
     private Vector3 m_CamForward;
     private Vector3 m_Move;
     private bool m_Jump;
