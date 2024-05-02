@@ -51,11 +51,11 @@ public class PlayerMotor : MonoBehavior {
         if (m_Cam != null)
         {
             m_CamForward - Vector3.Scale(m_Cam.forward, new Vector3(1,0,1)).normalized;
-            m_Move = vertical*m_CamForward + horizontal*m_Cam.right
+            m_Move = vertical*m_CamForward + horizontal*m_Cam.right;
         }
         else
         {
-            m_Move = vertical*Vector3.foward + horizontal*Vector3.right
+            m_Move = vertical*Vector3.foward + horizontal*Vector3.right;
         }
         if(m_Move.magnitude > 0)
             Move(m_Move);
@@ -91,7 +91,7 @@ public class PlayerMotor : MonoBehavior {
         move = transform.InverseTransformDirection(move);
         CheckGroundStatus();
         move = Vector3.ProjectOnPlane(move,m_GroundNormal);
-        m_TurnAmount = Mathf.Atan2(move.x,move.z)
+        m_TurnAmount = Mathf.Atan2(move.x,move.z);
         m_ForwardAmount = move.z;
         m_Rigidbody.velocity = transform.forward * currentMoveSpeed;
             ApplyExtraTurnRotation();
