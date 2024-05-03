@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 // final draft
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerMotor : MonoBehavior {
+public class PlayerMotor : MonoBehaviour 
+{
     float horizontal, vertical;
     Rigidbody m_Rigidbody;
     public float JumpPower;
@@ -21,7 +22,6 @@ public class PlayerMotor : MonoBehavior {
     }
     void Update() 
     {
-        CheckGroundStatus();
         horizontal = CrossPlatformInputManager.GetAxis("Horizontal");
         vertical = CrossPlatformInputManager.GetAxis("Vertical");
         
@@ -50,12 +50,12 @@ public class PlayerMotor : MonoBehavior {
     void FixedUpdate() {
         if (m_Cam != null)
         {
-            m_CamForward - Vector3.Scale(m_Cam.forward, new Vector3(1,0,1)).normalized;
+            m_CamForward = Vector3.Scale(m_Cam.forward, new Vector3(1,0,1)).normalized;
             m_Move = vertical*m_CamForward + horizontal*m_Cam.right;
         }
         else
         {
-            m_Move = vertical*Vector3.foward + horizontal*Vector3.right;
+            m_Move = vertical*Vector3.forward + horizontal*Vector3.right;
         }
         if(m_Move.magnitude > 0)
             Move(m_Move);
@@ -69,12 +69,15 @@ public class PlayerMotor : MonoBehavior {
         float turnSpeed = Mathf.Lerp(m_StationaryTurnSpeed, m_MovingTurnSpeed, m_ForwardAmount);
         transform.Rotate(0,m_TurnAmount*turnSpeed*Time.deltaTime,0);
     }
+    [SerializeField] float m_GroundCheckDistance = 360;
+    bool m_IsGrounded;
+    Vector3 m_GroundNormal;
     void CheckGroundStatus()
     {
-        Raycasthit hitInfo;
+        RaycastHit hitInfo;
         #if UNITY_EDITOR
 
-        if (Physics.Raycast(transform.position + (Vector3.up*0.1f), VEctor3.down, out hitInfo, m_GroundCheckDistance))
+        if (Physics.Raycast(transform.position + (Vector3.up*0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance))
         {
             m_GroundNormal = hitInfo.normal;
             m_IsGrounded = true;
@@ -82,14 +85,14 @@ public class PlayerMotor : MonoBehavior {
         else
         {
             m_IsGrounded = false;
-            m_GroundNormal = hitInfo.up;
+            m_GroundNormal = Vector3.up;
         }
+        #endif
     }
     public void Move(Vector3 move)
     {
         if (move.magnitude >  1f) move.Normalize();
         move = transform.InverseTransformDirection(move);
-        CheckGroundStatus();
         move = Vector3.ProjectOnPlane(move,m_GroundNormal);
         m_TurnAmount = Mathf.Atan2(move.x,move.z);
         m_ForwardAmount = move.z;
@@ -98,13 +101,11 @@ public class PlayerMotor : MonoBehavior {
     }
     Animator m_Animator;
     [SerializeField] float m_MoveSpeedMultiplier = 1f;
-    public void OnAnimatorMove()
-    {
-        if (m_IsGrounded && Time.deltaTime > 0)
-        {
-            Vector3 v = (m_Animator.deltaPosition * m_MoveSpeedMultiplier)  / Time.deltaTime;
-            v.y = m_Rigidbody.velocity.y;
-            m_Rigidbody.velocity = v;
+    public void OnAnimatorMove() {
+        if (m_IsGrounded && Time.deltaTime > 0) {
+            Vector3 vec = (m_Animator.deltaPosition * m_MoveSpeedMultiplier)  / Time.deltaTime;
+            vec.y = m_Rigidbody.velocity.y;
+            m_Rigidbody.velocity = vec;
         }
     }
 }
