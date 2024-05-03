@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityStandardAssets.CrossPlatformInput;
 public class BeetleNPC : MonoBehaviour {
-    Animator Animator;
+    Animator animator;
     public GameObject cucumberToDestroy;
     public bool cherryHit = false;
     public float SmoothTime = 3.0f;
@@ -26,15 +26,15 @@ public class BeetleNPC : MonoBehaviour {
         if (cherryHit) {
             var cm = GameObject.Find("CucumberMan");
             var tf = cm.transform;
-            this.GameObject.transform.LookAt(tf);
+            this.gameObject.transform.LookAt(tf);
 
-            Animator.Play("Standing Run");
+            animator.Play("Standing Run");
             transform.position = Vector3.SmoothDamp(transform.position,tf.position,ref smoothVelocity,SmoothTime);
         }
     }
     void OnCollisionEnter(Collision col)
     {
-        if (col.GameObject.CompareTag("Player")) 
+        if (col.gameObject.CompareTag("Player")) 
         {
             _healthManager = GameObject.Find("Health_Slider").GetComponent<HealthManager>();
             _healthManager.ReduceHealth();
@@ -45,22 +45,21 @@ public class BeetleNPC : MonoBehaviour {
 
                 var cm = GameObject.Find("CucumberMan");
                 var tf = cm.transform;
-                this.GameObject.transform.LookAt(tf);
+                this.gameObject.transform.LookAt(tf);
 
-                Animator.Play("Attacking on Ground");
+                animator.Play("Attacking on Ground");
                 StartCoroutine("DestroySelfOnGround");
             }
             else {
-                Animator.Play("Standing Attack");
+                animator.Play("Standing Attack");
                 StartCoroutine("DestroySelfStanding");
             }
         }
     }
-    void OnTriggerEnter(Collider, theObject)    
-    {
+    void OnTriggerEnter(Collider theObject) {
         if (theObject.gameObject.CompareTag("Cucumber")) 
         {
-            cucumberToDestroy = theObject.GameObject;
+            cucumberToDestroy = theObject.gameObject;
             BeetlePatrol.isEating = true;
             animator.Play("Eating on Ground");
             audioSource.PlayOneShot(eating);
@@ -68,7 +67,7 @@ public class BeetleNPC : MonoBehaviour {
         }
         else if(theObject.gameObject.CompareTag("Cherry"))
         {
-            _ptsManager = gameObject.Find("Score_Value").GetComponent<PointsManager>();
+            _ptsManager = GameObject.Find("Score_Value").GetComponent<PointsManager>();
             PointsManager.currentScore = PointsManager.currentScore + 10;
             BeetlePatrol.isAttacking = true;
             cherryHit = true;
@@ -78,24 +77,23 @@ public class BeetleNPC : MonoBehaviour {
     }
     IEnumerator DestroyCucumber() 
     {
-        yield return new WaitForSecondsRealTime (4);
+        yield return new WaitForSecondsRealtime(4);
         Destroy(cucumberToDestroy.gameObject);
         BeetlePatrol.isEating = false;
     }
     IEnumerator DestroySelfOnGround() 
     {
-        yield return new WaitForSecondsRealTime (4);
+        yield return new WaitForSecondsRealtime(4);
         animator.Play("Die on Ground");
         audioSource.PlayOneShot(die);
         Destroy(cucumberToDestroy.gameObject);
     }
     IEnumerator DestroySelfStanding() 
     {
-        yield return new WaitForSecondsRealTime (4);
+        yield return new WaitForSecondsRealtime(4);
         animator.Play("Die Standing");
         audioSource.PlayOneShot(die);
         Destroy(cucumberToDestroy.gameObject);
         cherryHit =  false;
     }
 }
-
