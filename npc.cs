@@ -44,7 +44,7 @@ public class BeetleNPC : MonoBehavior {
                 BeetlePatrol.isAttacking = true;
 
                 var cm = GameObject.Find("CucumberMan");
-                var tf = _cm.transform;
+                var tf = cm.transform;
                 this.GameObject.transform.LookAt(tf);
 
                 Animator.Play("Attacking on Ground");
