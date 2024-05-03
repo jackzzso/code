@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // camera system
-public class CameraFollower : MonoBehavior {
+public class CameraFollower : MonoBehaviour {
     public static CameraFollower instance;
 
     public float MovementSmoothness = 1f;
@@ -21,10 +21,9 @@ public class CameraFollower : MonoBehavior {
     }
     void LateUpdate()
     {
-        if(FollowTarget == null || !canFollow)
+        if(FollowTarget == null || !CanFollow)
             return;
-        transform.position = Vector3.Lerp(transform.position,FollowTarget.transform.position,Time.deltaTIme*MovementSmoothness);
-        transform.rotation - Quaternion.Slerp(transform.rotation,FollowTarget.transform.rotation,Time.deltaTime*RotationSmoothness);
+        transform.position = Vector3.Lerp(transform.position,FollowTarget.transform.position,Time.deltaTime*MovementSmoothness);
+        transform.rotation = Quaternion.Slerp(transform.rotation,FollowTarget.transform.rotation,Time.deltaTime*RotationSmoothness);
     }
 }
-
