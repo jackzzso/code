@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BeetleNPC : MonoBehavior {
+public class BeetleNPC : MonoBehaviour {
     Animator Animator;
     public GameObject cucumberToDestroy;
     public bool cherryHit = false;
@@ -18,7 +18,7 @@ public class BeetleNPC : MonoBehavior {
 
     void Start() 
     {
-        animator = GetComponet<Animator>();
+        animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
     }
     void Update() 
